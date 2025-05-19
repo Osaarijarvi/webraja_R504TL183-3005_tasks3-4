@@ -22,7 +22,7 @@ function App() {
               <Link to="/">Ratings</Link>
             </li>
             <li>
-              <Link to="/restaurants">RestaurantsTEST</Link>
+              <Link to="/restaurants">Restaurants</Link>
             </li>
            
             
