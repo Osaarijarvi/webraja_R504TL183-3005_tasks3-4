@@ -1,32 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RestaurantCard from './RestaurantCard';
 import './RestaurantList.css'; // Import your CSS file
 
 function RestaurantList() {
 
-  const [restaurants, setRestaurants] = useState([
-    {
-      id: 1,
-      imageUrl: '/images/cheese_burger.jpg',
-      name: 'Känttylä',
-      averageRating: 4.5,
-      reviewCount: 4,
-      cuisine: 'Italian',
-      priceRange: '$$',
-      address: 'Jokiväylä 11, 96300 ROVANIEMI'
-    },
-    {
-        id: 2,
-        imageUrl: '/images/cheese_burger.jpg',
-        name: 'Känttylä 2',
-        averageRating: 5,
-        reviewCount: 4,
-        cuisine: 'Italian',
-        priceRange: '$$',
-        address: 'Kansankatu 3'
-      }
-  ]) 
+  const [restaurants, setRestaurants] = useState([])
 
+
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/restaurants/ratings')
+        if(!response.ok) {
+          throw new Error(response.statusText)
+        }
+        const responseData = await response.json()
+        setRestaurants(responseData)  
+      } catch(e) {
+        console.log(e)
+      }
+    }
+    fetchRestaurants()
+  }, [])
   
     
   return (
