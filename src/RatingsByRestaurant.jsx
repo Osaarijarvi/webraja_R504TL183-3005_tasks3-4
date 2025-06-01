@@ -3,12 +3,30 @@
 import React, { useEffect, useState  } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import StarRating from './StarRating';
+import './RestaurantCard.css';
 
 function RatingsByRestaurant() {
     
-    const {id} = useParams();
+  const {id} = useParams();
 
   const [ratings, setRatings] = useState([])
+
+  const removeRating = async (ratingId) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/restaurants/${id}/ratings/${ratingId}`, {
+        method: 'DELETE'
+      })
+      if(!response.ok) {
+        throw new Error(response.statusText)
+      }
+      const remainingRatings = ratings.filter((rating) => {
+        return rating.id != ratingId
+      })
+      setRatings(remainingRatings)
+    } catch(e) {
+      console.log(e)
+    }
+  }
 
   useEffect(() => {
     const fetchRatings = async () => {
@@ -36,28 +54,30 @@ function RatingsByRestaurant() {
       </div>
       <div className="restaurant-list">
         {ratings.map((rating) => (
-        <RatingItem rating={rating} key={rating.id} resId={id} />
+        <RatingItem rating={rating} key={rating.id} id={id} removeRating={removeRating} />
         ))}
       </div>
     </div>
     );
 }
 
-  function RatingItem({rating}) {
+  function RatingItem({rating, removeRating}) {
     return (
 
       <div key={rating.id} className="restaurant-card" >     
-        <div className="restaurant-rating">
-            <StarRating rating={rating.value} /></div>
-        <div className="restaurant-rating">
+          <div className="restaurant-list-container">
+            <StarRating rating={rating.value} />         
+
+          </div>
+
+        <div className="restaurant-list">
           {rating.description}</div>
           
-        <div className="restaurant-rating">
-          {rating.date_rated}</div>
-        <button className="remove-rating-button-right" 
-        //onClick={() => ()}
-        >
-          Delete
+        <div className="restaurant-list">
+          Arvostelupvm: {rating.date_rated}</div>
+
+        <button className="remove-rating-button-right" onClick={() => removeRating(rating.id)}>
+              Delete
         </button>
       </div>
     )
