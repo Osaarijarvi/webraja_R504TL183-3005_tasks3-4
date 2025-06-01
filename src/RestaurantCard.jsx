@@ -15,15 +15,15 @@ function RestaurantCard({ restaurant, onRemoveRating }) {
             <strong><Link to={`/${restaurant.id}`}>{restaurant.name}</Link></strong>
           </h3>
           <div className="restaurant-rating">
-            <StarRating rating={restaurant.averageRating} />
-            <span>{restaurant.averageRating} ({restaurant.reviewCount} reviews)</span>
+            <StarRating rating={restaurant.rating} />
+            <span>{restaurant.rating} ({restaurant.review_count} reviews)</span>
           </div>
           <p className="restaurant-details">
-            <span>{restaurant.cuisine}</span><span>{restaurant.priceRange}</span>
+            <span>{restaurant.cuisine}</span><span>{restaurant.price_range}</span>
           </p>
           <p className="restaurant-address">{restaurant.address}</p>
         </div>
-        {restaurant.averageRating > 0 && (
+        {restaurant.rating > 0 && (
           <button className="remove-rating-button-right" onClick={() => onRemoveRating(restaurant.id)}>
             Remove
           </button>

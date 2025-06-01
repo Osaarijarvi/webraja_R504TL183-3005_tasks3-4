@@ -13,11 +13,18 @@ function RestaurantList() {
         const response = await fetch('http://localhost:8000/api/restaurants/ratings')
         if(!response.ok) {
           throw new Error(response.statusText)
-        }
-        const responseData = await response.json()
-        setRestaurants(responseData)  
+ }
+        let responseData = await response.json()
+        console.log("ennen mappausta", responseData)
+        
+        responseData = responseData.map((restaurant) => {
+          return {...restaurant, imageUrl: '/images/cheese_burger.jpg'}
+        })
+        
+        console.log("mappauksen jalkeen", responseData)
+        setRestaurants(responseData)
       } catch(e) {
-        console.log(e)
+          console.log(e)
       }
     }
     fetchRestaurants()
